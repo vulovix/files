@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  useDoubleClick,
-  useContextMenu,
-  useHistoryStack,
-} from "../Hooks/hooks";
+import { useDoubleClick, useContextMenu } from "../Hooks/hooks";
 import File from "../File/File";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import ItemContextMenu from "../ItemContextMenu/ItemContextMenu";
@@ -14,7 +10,6 @@ function Files(props) {
   const [isFileDoubleClick, registerFileClick] = useDoubleClick(300);
   const contextMenu = useContextMenu("files");
   const itemContextMenu = useContextMenu("item");
-  const historyStack = useHistoryStack();
 
   const { files, navigateToFolder, openTextEdit } = props;
 
@@ -42,12 +37,21 @@ function Files(props) {
   }
 
   function handleItemRemove() {
-    const currentFolder = historyStack.currentFolder();
-    delete currentFolder[itemContextMenu.element.id];
-    historyStack.updateCurrentFolder(currentFolder);
-    localStorage.setItem("xOS_Files", JSON.stringify(historyStack.root()));
+    props.removeFromQuickAccess(itemContextMenu.element.id);
+    const c = props.currentFolder;
+    delete c[itemContextMenu.element.id];
+    props.refreshFiles(c);
     itemContextMenu.close();
-    props.refreshFiles(currentFolder);
+  }
+
+  function handleAddToQuickAccess() {
+    props.addToQuickAccess(itemContextMenu.element.id);
+    itemContextMenu.close();
+  }
+
+  function handleRemoveFromQuickAccess() {
+    props.removeFromQuickAccess(itemContextMenu.element.id);
+    itemContextMenu.close();
   }
 
   function openNewFileDialog(type) {
@@ -71,21 +75,43 @@ function Files(props) {
       )}
       {itemContextMenu.isOpen && (
         <ItemContextMenu
+          onRemove={handleItemRemove}
           xPos={itemContextMenu.position.x}
           yPos={itemContextMenu.position.y}
-          onRemove={handleItemRemove}
-          openNewFileDialog={(type) => openNewFileDialog(type)}
+          onOpen={() => {
+            const name = itemContextMenu.element.id;
+            setActiveFile(name);
+            itemContextMenu.close();
+            const type = files[name].type;
+            // setActiveFile("");
+            if (type === "folder") {
+              navigateToFolder(name);
+            } else {
+              openTextEdit(name);
+            }
+            registerFileClick();
+          }}
+          allowRemove={itemContextMenu.element.id !== "Home"}
+          allowQuickAccess={
+            files[itemContextMenu.element.id].type === "folder" &&
+            files[itemContextMenu.element.id].level === 1
+          }
+          onQuickAccessAdd={() => handleAddToQuickAccess()}
+          onQuickAccessRemove={() => handleRemoveFromQuickAccess()}
+          isInQuickAccess={props.quickAccess.includes(
+            itemContextMenu.element.id
+          )}
         />
       )}
       {files && Object.keys(files).length ? (
         Object.keys(files).map((fileName) => (
           <File
-            isActive={fileName === activeFile}
-            onClickFile={(e) => onClickFile(e, fileName)}
-            onContextMenu={(e) => itemContextMenu.open(e)}
             key={fileName}
             name={fileName}
             type={files[fileName].type}
+            isActive={fileName === activeFile}
+            onClickFile={(e) => onClickFile(e, fileName)}
+            onContextMenu={(e) => itemContextMenu.open(e)}
           />
         ))
       ) : (

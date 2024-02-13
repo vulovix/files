@@ -1,9 +1,11 @@
 const root = {
   Home: {
     type: "folder",
+    level: 0,
     files: {
       Documents: {
         type: "folder",
+        level: 1,
         files: {
           "document.txt": {
             type: "textfile",
@@ -12,6 +14,7 @@ const root = {
         },
       },
       Downloads: {
+        level: 1,
         type: "folder",
         files: {
           "download.txt": {

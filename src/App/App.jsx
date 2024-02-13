@@ -18,6 +18,13 @@ function App() {
   const [textEditOpen, setTextEditOpen] = useState(false);
   const [textEditFileName, setTextEditFileName] = useState("");
   const [textEditFileText, setTextEditFileText] = useState("");
+  const defaultQuickAccess = ["Home", "Documents", "Downloads"];
+  const [quickAccess, setQuickAccess] = useState(
+    localStorage.getItem("xOS_Files_QuickAccess")
+      ? JSON.parse(localStorage.getItem("xOS_Files_QuickAccess")) ||
+          defaultQuickAccess
+      : defaultQuickAccess
+  );
 
   function openTextEdit(name) {
     const currentFolder = historyStack.currentFolder();
@@ -48,21 +55,31 @@ function App() {
 
   function createNewFile(name) {
     const currentFolder = historyStack.currentFolder();
+    const sibilingLevel = Object.values(currentFolder)[0]?.level;
+
+    console.log(sibilingLevel);
 
     if (newFileDialogType === "folder") {
-      currentFolder[name] = { type: "folder", files: {} };
+      currentFolder[name] = {
+        type: "folder",
+        files: {},
+        level: sibilingLevel,
+      };
     } else {
-      currentFolder[name] = { type: "textfile", text: "" };
+      currentFolder[name] = {
+        type: "textfile",
+        text: "",
+      };
     }
 
     historyStack.updateCurrentFolder(currentFolder);
-
     setNewFileDialogOpen(false);
     localStorage.setItem("xOS_Files", JSON.stringify(historyStack.root()));
   }
 
   function refreshFiles(newFiles) {
     historyStack.updateCurrentFolder(newFiles);
+    localStorage.setItem("xOS_Files", JSON.stringify(historyStack.root()));
   }
 
   function getSearchedFiles(folder) {
@@ -99,44 +116,67 @@ function App() {
     (fileName) => files[fileName].type === "textfile"
   ).length;
 
-  const favorites = ["Home", "Documents", "Downloads"];
+  const handleAddToQuickAccess = (name) => {
+    setQuickAccess((s) => {
+      localStorage.setItem(
+        "xOS_Files_QuickAccess",
+        JSON.stringify([...s, name])
+      );
+      return [...s, name];
+    });
+  };
+
+  const handleRemoveFromQuickAccess = (name) => {
+    setQuickAccess((s) => {
+      const newQuickAccess = s.filter((folder) => folder !== name);
+      localStorage.setItem(
+        "xOS_Files_QuickAccess",
+        JSON.stringify(newQuickAccess)
+      );
+      return newQuickAccess;
+    });
+  };
 
   return (
     <div id="window">
       <TextEdit
-        isModalOpen={textEditOpen}
         text={textEditFileText}
         name={textEditFileName}
-        saveChangesToFile={(name) => saveChangesToFile(name)}
+        isModalOpen={textEditOpen}
         closeTextEdit={() => closeTextEdit()}
+        saveChangesToFile={(name) => saveChangesToFile(name)}
       />
       <NewFileDialog
-        modalIsOpen={newFileDialogOpen}
         fileType={newFileDialogType}
-        onClickCancel={() => setNewFileDialogOpen(false)}
+        modalIsOpen={newFileDialogOpen}
         onClickSave={(name) => createNewFile(name)}
+        onClickCancel={() => setNewFileDialogOpen(false)}
       />
       <div id="finder">
         <MenuBar
           searchInput={searchInput.value}
           onSearchInputChange={(e) => searchInput.onChange(e)}
-          navigateBackward={() => historyStack.navigateBackward()}
           navigateForward={() => historyStack.navigateForward()}
+          navigateBackward={() => historyStack.navigateBackward()}
           disableBackButton={historyStack.backwardHistory.length <= 1}
           disableForwardButton={historyStack.forwardHistory.length === 0}
         />
         <SideBar
-          favorites={favorites}
+          favorites={quickAccess}
           navigateToFavorite={(folderName) =>
             historyStack.navigateToFavorite(folderName)
           }
         />
         <Files
           files={files}
+          quickAccess={quickAccess}
           refreshFiles={refreshFiles}
-          navigateToFolder={(name) => historyStack.navigateToFolder(name)}
           openTextEdit={(name) => openTextEdit(name)}
+          currentFolder={historyStack.currentFolder()}
           openNewFileDialog={(type) => openNewFileDialog(type)}
+          addToQuickAccess={(name) => handleAddToQuickAccess(name)}
+          removeFromQuickAccess={(name) => handleRemoveFromQuickAccess(name)}
+          navigateToFolder={(name) => historyStack.navigateToFolder(name)}
         />
         <StatusBar filesCount={filesCount} textFilesCount={textfilesCount} />
       </div>

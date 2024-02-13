@@ -10,14 +10,15 @@ function useHistoryStack() {
     setBackwardHistory([files || defaultRoot]);
   }, []);
 
-  function navigateBackward() {
+  const navigateBackward = () => {
     setForwardHistory((forwardHistory) => [...forwardHistory, currentFolder()]);
     setBackwardHistory((backwardHistory) =>
       backwardHistory.slice(0, backwardHistory.length - 1)
     );
-  }
+    console.log("navigateBackward");
+  };
 
-  function navigateForward() {
+  const navigateForward = () => {
     setBackwardHistory((backwardHistory) => [
       ...backwardHistory,
       forwardHistory[forwardHistory.length - 1],
@@ -25,38 +26,38 @@ function useHistoryStack() {
     setForwardHistory((forwardHistory) =>
       forwardHistory.slice(0, forwardHistory.length - 1)
     );
-  }
+  };
 
-  function navigateToFolder(name) {
+  const navigateToFolder = (name) => {
     setBackwardHistory((backwardHistory) => {
       return [...backwardHistory, currentFolder()[name].files];
     });
     setForwardHistory([]);
-  }
+  };
 
-  function navigateToFavorite(folderName) {
+  const navigateToFavorite = (folderName) => {
     const root = backwardHistory[0];
     const homeDirectory = root["Home"];
     const folder =
       folderName === "Home" ? homeDirectory : homeDirectory.files[folderName];
     setBackwardHistory((backwardHistory) => [...backwardHistory, folder.files]);
     setForwardHistory([]);
-  }
+  };
 
-  function updateCurrentFolder(updatedFolder) {
+  const updateCurrentFolder = (updatedFolder) => {
     setBackwardHistory((backwardHistory) => [
       ...backwardHistory.slice(0, backwardHistory.length - 1),
       updatedFolder,
     ]);
-  }
+  };
 
-  function currentFolder() {
+  const currentFolder = () => {
     return backwardHistory[backwardHistory.length - 1];
-  }
+  };
 
-  function root() {
+  const root = () => {
     return backwardHistory[0];
-  }
+  };
 
   return {
     backwardHistory,
