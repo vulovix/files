@@ -1,0 +1,20 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0px;
+  background: none;
+}
+
+.modal {
+  position: absolute;
+
+  box-shadow: 0 0 6px #00000040;
+  // background: rgba(249, 249, 249, .9);
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  // box-shadow: var(--modal-shadow);
+  outline: none;
+}

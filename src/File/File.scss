@@ -1,0 +1,47 @@
+.file {
+  font-size: 8px;
+  color: var(--color-text-light);
+
+  display: grid;
+
+  align-items: center;
+  justify-content: center;
+
+  .name {
+    justify-self: center;
+    font-size: 12px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    bottom: 22px;
+  }
+
+  &:hover,
+  &.active {
+    .icon-wrapper {
+      background: rgba(0, 178, 255, .16);
+    }
+  }
+}
+
+.icon-wrapper {
+  padding: 0px 8px 16px 8px;
+}
+
+.icon {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.folder.icon {
+  background-image: url(./folder.png);
+  margin: 1rem;
+}
+
+.textfile.icon {
+  background-image: url(./textfile.png);
+  margin: 1rem;
+}

@@ -1,0 +1,62 @@
+.new-file-dialog {
+  display: grid;
+  overflow: hidden;
+  border-radius: var(--button-border-radius);
+
+  .toolbar {
+    background: #f3f3f3 radial-gradient(#eff4f9 75%, #f3f3f3 100%) no-repeat fixed;
+    font-size: 12px;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dialog-body {
+    padding: 5px 15px;
+  }
+
+  .file-name-label {
+    margin: 0.5rem 0;
+    display: block;
+    font-size: 12px;
+  }
+
+  .file-name-input {
+    outline: none;
+    padding: 0.6em 0.6em;
+    font-size: 0.8em;
+    color: var(--txt-col);
+    border: 1px solid var(--color-border);
+    display: flex;
+    width: 250px;
+    font-size: 12px;
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .dialog-buttons {
+    margin: 1rem 0 0.5rem 0;
+
+    .cancel {
+      background: var(--color-background);
+    }
+    button{
+      padding: 0.6em 0.6em;
+      color: var(--txt-col);
+      border: none; // 1px solid var(--color-border);
+      font-weight: 500;
+      border-radius: 0px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      box-shadow: none;
+      text-align: center;
+    }
+
+    .save {
+      margin-left: 10px;
+      background: #0067c0;
+      color: var(--color-background);
+      // box-shadow: 1px 1px 1px 1px var(--color-primary-bold);
+    }
+  }
+}

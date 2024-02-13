@@ -1,0 +1,22 @@
+.item-context-menu {
+  position: absolute;
+  overflow: hidden;
+
+  width: 160px;
+  // width: auto;
+  padding: 0 6px;
+  box-sizing: border-box;
+
+  --bg1: rgba(249, 249, 249, .9);
+  --bg1a: rgba(248, 248, 248, .96);
+  --bg2: rgba(0, 0, 0, .08);
+  
+  background: var(--bg1);
+  -webkit-backdrop-filter: saturate(2) blur(20px);
+  backdrop-filter: saturate(2) blur(20px);
+  z-index: 10000;
+  opacity: 1;
+  pointer-events: all;
+  border-radius: 8px;
+  transition: opacity .1s ease;
+}

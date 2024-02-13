@@ -1,0 +1,11 @@
+#window{
+  height: 100%;
+}
+#finder {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 58px auto 25px;
+  grid-template-columns: 178px minmax(150px, auto);
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}

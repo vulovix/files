@@ -1,0 +1,39 @@
+@import "../styles/utils.scss";
+
+.search-bar {
+  width: 20%;
+  outline: none;
+  padding: 0.6em 0.2em;
+  font-size: .8em;
+  color: var(--txt-col);
+  border: 1px solid var(--color-border);
+  display: flex;
+
+  .ui-icon{
+    margin: 0 1em;
+    img{
+      transform-origin: center;
+      transition: .4s ease-in-out;
+    }
+  }
+  input{
+    width: 100%;
+    font-size: inherit;
+    background: inherit;
+    border: none;
+    outline: none;
+    color: var(--med-dark);
+    padding-left: 0px;
+  }
+  &:placeholder {
+    color: var(--color-text-lighter);
+  }
+}
+
+.search-box-icon {
+  position: absolute;
+  font-size: 12px;
+  position: relative;
+  top: 2px;
+  color: var(--color-text);
+}

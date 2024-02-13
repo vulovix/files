@@ -1,0 +1,47 @@
+.text-edit {
+  display: grid;
+  grid-template-rows: 26px auto;
+  overflow: hidden;
+  .file-name{
+    display: flex;
+    align-items: center;
+  }
+  .toolbar {
+    background: #f3f3f3 radial-gradient(#eff4f9 75%, #f3f3f3 100%) no-repeat fixed;
+    font-size: 12px;
+    padding: 12px 0px 12px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .text-edit-body {
+    height: 570px;
+    width: 590px;
+  }
+
+  .text-edit-editor {
+    tab-size: 2;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    white-space: pre;
+    font-family: consolas, menlo, monospace;
+    color: transparent;
+    color: inherit;
+    caret-color: rgb(171, 178, 191);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0 auto;
+    resize: none;
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    height: 100vh;
+    line-height: 1.6;
+    &:focus {
+      outline: none;
+    }
+  }
+}

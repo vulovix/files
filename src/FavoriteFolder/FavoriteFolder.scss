@@ -1,0 +1,33 @@
+.favorites-folder {
+  display: flex;
+  align-items: flex-end;
+  color: var(--color-text-soft);
+  font-size: 14px;
+  padding: 5px 12px 5px 30px;
+  display: flex;
+  align-items: center;
+
+  &.active {
+    background: rgba(0, 178, 255, .16);
+    color: var(--color-text);
+  }
+  &:hover{
+    background: rgba(0, 178, 255, .16);
+  }
+}
+
+.favorites-folder-icon {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.favorites-folder-name {
+  margin-left: 0.25rem;
+  text-align: left;
+  color: var(--color-text-soft);
+  font-size: 12.5px;
+  padding: 5px 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
