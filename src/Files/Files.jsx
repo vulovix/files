@@ -119,9 +119,14 @@ function Files(props) {
           style={{
             width: "100%",
             textWrap: "nowrap",
+            fontSize: "small",
+            position: "relative",
+            bottom: "0.5rem",
             color: "var(--color-text-lighter)",
           }}
-        ></div>
+        >
+          This folder is empty.
+        </div>
       )}
     </main>
   );

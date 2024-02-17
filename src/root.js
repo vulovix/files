@@ -1,4 +1,4 @@
-const root = {
+export const defaultFileStructure = {
   Home: {
     type: "folder",
     level: 0,
@@ -13,11 +13,11 @@ const root = {
           },
         },
       },
-      Downloads: {
+      Notes: {
         level: 1,
         type: "folder",
         files: {
-          "download.txt": {
+          "note.txt": {
             type: "textfile",
             text: "[x] buy groceries\n[ ] walk the dog\n[x] learn react\n[ ] hit the gym",
           },
@@ -27,4 +27,4 @@ const root = {
   },
 };
 
-export { root };
+export const defaultQuickAccess = ["Home", "Documents"];

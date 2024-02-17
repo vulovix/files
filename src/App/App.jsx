@@ -8,6 +8,7 @@ import NewFileDialog from "../NewFileDialog/NewFileDialog";
 import TextEdit from "../TextEdit/TextEdit";
 
 import "./App.scss";
+import { StorageKeys, getStorage, setStorage } from "../utils/storage";
 
 function App() {
   const searchInput = useFormInput("");
@@ -18,13 +19,7 @@ function App() {
   const [textEditOpen, setTextEditOpen] = useState(false);
   const [textEditFileName, setTextEditFileName] = useState("");
   const [textEditFileText, setTextEditFileText] = useState("");
-  const defaultQuickAccess = ["Home", "Documents", "Downloads"];
-  const [quickAccess, setQuickAccess] = useState(
-    localStorage.getItem("xOS_Files_QuickAccess")
-      ? JSON.parse(localStorage.getItem("xOS_Files_QuickAccess")) ||
-          defaultQuickAccess
-      : defaultQuickAccess
-  );
+  const [quickAccess, setQuickAccess] = useState(getStorage().quickAccess);
 
   function openTextEdit(name) {
     const currentFolder = historyStack.currentFolder();
@@ -50,7 +45,7 @@ function App() {
       : historyStack.currentFolder();
 
     files[textEditFileName].text = text;
-    localStorage.setItem("xOS_Files", JSON.stringify(historyStack.root()));
+    setStorage(StorageKeys.fileStructure, historyStack.root());
   }
 
   function createNewFile(name) {
@@ -74,12 +69,12 @@ function App() {
 
     historyStack.updateCurrentFolder(currentFolder);
     setNewFileDialogOpen(false);
-    localStorage.setItem("xOS_Files", JSON.stringify(historyStack.root()));
+    setStorage(StorageKeys.fileStructure, historyStack.root());
   }
 
   function refreshFiles(newFiles) {
     historyStack.updateCurrentFolder(newFiles);
-    localStorage.setItem("xOS_Files", JSON.stringify(historyStack.root()));
+    setStorage(StorageKeys.fileStructure, historyStack.root());
   }
 
   function getSearchedFiles(folder) {
@@ -118,21 +113,16 @@ function App() {
 
   const handleAddToQuickAccess = (name) => {
     setQuickAccess((s) => {
-      localStorage.setItem(
-        "xOS_Files_QuickAccess",
-        JSON.stringify([...s, name])
-      );
-      return [...s, name];
+      const newQuickAccess = [...s, name];
+      setStorage(StorageKeys.quickAccess, newQuickAccess);
+      return newQuickAccess;
     });
   };
 
   const handleRemoveFromQuickAccess = (name) => {
     setQuickAccess((s) => {
       const newQuickAccess = s.filter((folder) => folder !== name);
-      localStorage.setItem(
-        "xOS_Files_QuickAccess",
-        JSON.stringify(newQuickAccess)
-      );
+      setStorage(StorageKeys.quickAccess, newQuickAccess);
       return newQuickAccess;
     });
   };

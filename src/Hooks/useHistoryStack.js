@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { root as defaultRoot } from "../root";
+import { getStorage } from "../utils/storage";
 
 function useHistoryStack() {
   const [backwardHistory, setBackwardHistory] = useState([]);
   const [forwardHistory, setForwardHistory] = useState([]);
 
   useEffect(() => {
-    const files = JSON.parse(localStorage.getItem("xOS_Files"));
-    setBackwardHistory([files || defaultRoot]);
+    setBackwardHistory([getStorage().fileStructure]);
   }, []);
 
   const navigateBackward = () => {
