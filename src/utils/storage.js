@@ -1,5 +1,7 @@
 import { defaultQuickAccess, defaultFileStructure } from "../root";
 
+const MAIN_STORAGE_KEY = "xOS_Files";
+
 export const StorageKeys = {
   quickAccess: "quickAccess",
   fileStructure: "fileStructure",
@@ -9,7 +11,7 @@ export function getStorage() {
     quickAccess: defaultQuickAccess,
     fileStructure: defaultFileStructure,
   };
-  const storage = localStorage.getItem("xOS_Files");
+  const storage = localStorage.getItem(MAIN_STORAGE_KEY);
   if (!storage) {
     return defaultStorage;
   }
@@ -23,5 +25,5 @@ export function setStorage(key, value) {
   }
   const storage = getStorage();
   storage[key] = value;
-  localStorage.setItem("xOS_Files", JSON.stringify(storage));
+  localStorage.setItem(MAIN_STORAGE_KEY, JSON.stringify(storage));
 }
